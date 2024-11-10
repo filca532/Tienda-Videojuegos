@@ -1,4 +1,4 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
 import java.util.Objects;
 

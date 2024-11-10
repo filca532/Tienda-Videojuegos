@@ -1,19 +1,21 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Miembro {
     private int idMiembro;
     private int idCliente;
+    private String nombreCliente;
     private String tipoMiembro;
     private String nivelMembresia;
-    private String fechaIngreso;
+    private Date fechaIngreso;
 
     public Miembro() {
         super();
     }
 
-    public Miembro(int idMiembro, int idCliente, String tipoMiembro, String nivelMembresia, String fechaIngreso) {
+    public Miembro(int idMiembro, int idCliente, String tipoMiembro, String nivelMembresia, Date fechaIngreso) {
         this.idMiembro = idMiembro;
         this.idCliente = idCliente;
         this.tipoMiembro = tipoMiembro;
@@ -21,7 +23,16 @@ public class Miembro {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public Miembro(int idCliente, String tipoMiembro, String nivelMembresia, String fechaIngreso) {
+    public Miembro(int idMiembro, int idCliente, String nombreCliente, String tipoMiembro, String nivelMembresia, Date fechaIngreso) {
+        this.idMiembro = idMiembro;
+        this.idCliente = idCliente;
+        this.nombreCliente = nombreCliente;
+        this.tipoMiembro = tipoMiembro;
+        this.nivelMembresia = nivelMembresia;
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Miembro(int idCliente, String tipoMiembro, String nivelMembresia, Date fechaIngreso) {
         this.idCliente = idCliente;
         this.tipoMiembro = tipoMiembro;
         this.nivelMembresia = nivelMembresia;
@@ -44,6 +55,14 @@ public class Miembro {
         this.idCliente = idCliente;
     }
 
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
     public String getTipoMiembro() {
         return tipoMiembro;
     }
@@ -60,11 +79,11 @@ public class Miembro {
         this.nivelMembresia = nivelMembresia;
     }
 
-    public String getFechaIngreso() {
+    public Date getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
@@ -73,12 +92,12 @@ public class Miembro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Miembro miembro = (Miembro) o;
-        return idMiembro == miembro.idMiembro && idCliente == miembro.idCliente && Objects.equals(tipoMiembro, miembro.tipoMiembro) && Objects.equals(nivelMembresia, miembro.nivelMembresia) && Objects.equals(fechaIngreso, miembro.fechaIngreso);
+        return idMiembro == miembro.idMiembro && idCliente == miembro.idCliente && Objects.equals(nombreCliente, miembro.nombreCliente) && Objects.equals(tipoMiembro, miembro.tipoMiembro) && Objects.equals(nivelMembresia, miembro.nivelMembresia) && Objects.equals(fechaIngreso, miembro.fechaIngreso);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMiembro, idCliente, tipoMiembro, nivelMembresia, fechaIngreso);
+        return Objects.hash(idMiembro, idCliente, nombreCliente, tipoMiembro, nivelMembresia, fechaIngreso);
     }
 
     @Override
@@ -86,9 +105,10 @@ public class Miembro {
         return "Miembro{" +
                 "idMiembro=" + idMiembro +
                 ", idCliente=" + idCliente +
+                ", nombreCliente='" + nombreCliente + '\'' +
                 ", tipoMiembro='" + tipoMiembro + '\'' +
                 ", nivelMembresia='" + nivelMembresia + '\'' +
-                ", fechaIngreso='" + fechaIngreso + '\'' +
+                ", fechaIngreso=" + fechaIngreso +
                 '}';
     }
 }

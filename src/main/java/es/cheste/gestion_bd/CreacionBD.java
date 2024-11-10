@@ -1,4 +1,4 @@
-package es.cheste;
+package es.cheste.gestion_bd;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,13 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Clase para gestionar la creación de la base de datos y la inserción de datos.
+ */
 public class CreacionBD {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    /**
+     * Constructor de la clase CreacionBD.
+     */
     public CreacionBD() {
         super();
     }
 
+    /**
+     * Crea todas las tablas necesarias en la base de datos.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     public void crearTablas(ConexionBD conexionBD) {
         crearTablaCliente(conexionBD);
         crearTablaMiembros(conexionBD);
@@ -31,23 +42,51 @@ public class CreacionBD {
         crearTablaVideojuegoGenero(conexionBD);
     }
 
+    /**
+     * Inserta datos en todas las tablas de la base de datos.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     public void insertarDatos(ConexionBD conexionBD) {
-        insertarClientes(conexionBD);
-        insertarMiembros(conexionBD);
-        insertarEmpleados(conexionBD);
-        insertarProveedores(conexionBD);
-        insertarProductos(conexionBD);
-        insertarFacturas(conexionBD);
-        insertarFacturaLineas(conexionBD);
-        insertarMerchandising(conexionBD);
-        insertarVideojuegos(conexionBD);
-        insertarConsolas(conexionBD);
-        insertarPlataformas(conexionBD);
-        insertarGeneros(conexionBD);
-        insertarVideojuegoPlataformas(conexionBD);
-        insertarVideojuegoGeneros(conexionBD);
+        try {
+            conexionBD.getConnection().setAutoCommit(false);
+            insertarClientes(conexionBD);
+            insertarMiembros(conexionBD);
+            insertarEmpleados(conexionBD);
+            insertarProveedores(conexionBD);
+            insertarProductos(conexionBD);
+            insertarFacturas(conexionBD);
+            insertarFacturaLineas(conexionBD);
+            insertarMerchandising(conexionBD);
+            insertarVideojuegos(conexionBD);
+            insertarConsolas(conexionBD);
+            insertarPlataformas(conexionBD);
+            insertarGeneros(conexionBD);
+            insertarVideojuegoPlataformas(conexionBD);
+            insertarVideojuegoGeneros(conexionBD);
+
+            conexionBD.getConnection().commit();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+
+            try {
+                if (conexionBD.getConnection() != null && !conexionBD.getConnection().isClosed()) {
+                    conexionBD.getConnection().rollback();
+                }
+            } catch (SQLException ex) {
+                LOGGER.error(ex.getMessage());
+            }
+        }
     }
 
+
+    /**
+     * Comprueba si una tabla está vacía.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     * @param nombreTabla Nombre de la tabla a comprobar.
+     * @return El número de registros en la tabla.
+     */
     private int comprobarTablaIsVacia(ConexionBD conexionBD, String nombreTabla) {
         String sql = "SELECT COUNT(*) AS total FROM " + nombreTabla;
         int count = 0;
@@ -62,6 +101,11 @@ public class CreacionBD {
         return count;
     }
 
+    /**
+     * Inserta datos en la tabla CLIENTE.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarClientes(ConexionBD conexionBD) {
         String sql = "INSERT INTO CLIENTE (NOMBRE, APELLIDOS, EMAIL, TELEFONO, DIRECCION, FECHA_REGISTRO) VALUES " +
                 "('Juan', 'Pérez', 'juan.perez@example.com', '123456789', 'Calle Falsa 123, Madrid', '2023-10-01'), " +
@@ -92,6 +136,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla MIEMBRO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarMiembros(ConexionBD conexionBD) {
         String sql = "INSERT INTO MIEMBRO (ID_CLIENTE, TIPO_MIEMBRO, NIVEL_MEMBRESIA, FECHA_INGRESO) VALUES " +
                 "(1, 'Premium', 'Oro', '2023-10-05'), " +
@@ -114,19 +163,24 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla EMPLEADO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarEmpleados(ConexionBD conexionBD) {
         String sql = "INSERT INTO EMPLEADO (NOMBRE, APELLIDOS, EMAIL, TELEFONO, PUESTO, SALARIO, FECHA_CONTRATACION, DESCUENTO_EMPLEADO) VALUES " +
                 "('Carlos', 'Lopez', 'carlos.lopez@empresa.com', '666777888', 'Gerente', 3000.50, '2021-01-15', 10.0), " +
                 "('Maria', 'Suarez', 'maria.suarez@empresa.com', '654321987', 'Vendedor', 1500.75, '2022-05-10', 5.0), " +
                 "('Laura', 'Fernandez', 'laura.fernandez@empresa.com', '222333444', 'Atención al cliente', 1300.25, '2022-04-14', 4.5), " +
-                "('Javier', 'Lozano', 'javier.lozano@empresa.com', '444555666', 'Administrador', 2000.75, '2020-12-11', 8.0), " +
-                "('Sara', 'Rodriguez', 'sara.rodriguez@empresa.com', '777888999', 'Supervisor', 2500.00, '2019-09-08', 7.5), " +
+                "('Javier', 'Lozano', 'javier.lozano@empresa.com', '444555666', 'Repartidor', 2000.75, '2020-12-11', 8.0), " +
+                "('Sara', 'Rodriguez', 'sara.rodriguez@empresa.com', '777888999', 'Repartidor', 2500.00, '2019-09-08', 7.5), " +
                 "('Miguel', 'Hernandez', 'miguel.hernandez@empresa.com', '111222333', 'Vendedor', 1500.75, '2022-07-18', 5.0), " +
-                "('Luis', 'Martinez', 'luis.martinez@empresa.com', '333444555', 'Desarrollador', 2800.00, '2021-03-25', 6.5), " +
-                "('Ana', 'Vega', 'ana.vega@empresa.com', '555666777', 'Recepcionista', 1400.50, '2020-06-01', 4.0), " +
-                "('David', 'Morales', 'david.morales@empresa.com', '888999000', 'Técnico de soporte', 1600.00, '2023-02-15', 3.5), " +
-                "('Isabel', 'Ruiz', 'isabel.ruiz@empresa.com', '222111333', 'Encargada de logística', 2200.30, '2021-11-10', 6.0), " +
-                "('Fernando', 'Gutierrez', 'fernando.gutierrez@empresa.com', '999000111', 'Analista', 2750.45, '2021-08-23', 7.0);";
+                "('Luis', 'Martinez', 'luis.martinez@empresa.com', '333444555', 'Gerente', 2800.00, '2021-03-25', 6.5), " +
+                "('Ana', 'Vega', 'ana.vega@empresa.com', '555666777', 'Vendedor', 1400.50, '2020-06-01', 4.0), " +
+                "('David', 'Morales', 'david.morales@empresa.com', '888999000', 'Vendedor', 1600.00, '2023-02-15', 3.5), " +
+                "('Isabel', 'Ruiz', 'isabel.ruiz@empresa.com', '222111333', 'Repartidor', 2200.30, '2021-11-10', 6.0), " +
+                "('Fernando', 'Gutierrez', 'fernando.gutierrez@empresa.com', '999000111', 'Atencion al cliente', 2750.45, '2021-08-23', 7.0);";
         try {
             if (comprobarTablaIsVacia(conexionBD, "EMPLEADO") == 0) {
                 Statement statement = conexionBD.getConnection().createStatement();
@@ -137,6 +191,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla PROVEEDOR.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarProveedores(ConexionBD conexionBD) {
         String sql = "INSERT INTO PROVEEDOR (NOMBRE, DIRECCION, TELEFONO, EMAIL, PAIS) VALUES " +
                 "('Tech Corp', 'Calle Informática 45, Madrid', '555123456', 'contact@techcorp.com', 'España'), " +
@@ -159,6 +218,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla PRODUCTO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarProductos(ConexionBD conexionBD) {
         String sql = "INSERT INTO PRODUCTO (TIPO_PRODUCTO, NOMBRE, PRECIO, STOCK) VALUES " +
                 "('videojuego', 'FIFA 23', 59.99, 100), " +
@@ -185,6 +249,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla FACTURA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarFacturas(ConexionBD conexionBD) {
         String sql = "INSERT INTO FACTURA (ID_CLIENTE, ID_EMPLEADO, FECHA_PEDIDO, TOTAL_PEDIDO, METODO_PAGO) VALUES " +
                 "(1, 1, '2023-10-10', 120.75, 'Tarjeta'), " +
@@ -217,38 +286,43 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla FACTURA_LINEA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarFacturaLineas(ConexionBD conexionBD) {
-        String sql = "INSERT INTO FACTURA_LINEA (ID_FACTURA, ID_PRODUCTO, TIPO_PRODUCTO, CANTIDAD, PRECIO_UNITARIO) VALUES " +
-                "(1, 1, 'videojuego', 1, 59.99), " +
-                "(1, 10, 'merchandising', 2, 19.99), " +
-                "(1, 2, 'videojuego', 1, 69.99), " +
-                "(2, 6, 'consola', 1, 499.99), " +
-                "(2, 10, 'merchandising', 3, 19.99), " +
-                "(3, 5, 'videojuego', 2, 49.99), " +
-                "(3, 3, 'videojuego', 1, 29.99), " +
-                "(4, 8, 'consola', 1, 299.99), " +
-                "(4, 12, 'merchandising', 4, 12.99), " +
-                "(5, 2, 'videojuego', 1, 69.99), " +
-                "(5, 11, 'merchandising', 1, 9.99), " +
-                "(6, 5, 'videojuego', 1, 49.99), " +
-                "(6, 1, 'videojuego', 1, 59.99), " +
-                "(7, 3, 'videojuego', 1, 29.99), " +
-                "(7, 6, 'consola', 1, 499.99), " +
-                "(8, 13, 'merchandising', 5, 24.99), " +
-                "(9, 7, 'consola', 2, 299.99), " +
-                "(10, 4, 'videojuego', 1, 59.99), " +
-                "(10, 5, 'videojuego', 2, 49.99), " +
-                "(11, 9, 'consola', 1, 299.99), " +
-                "(11, 10, 'merchandising', 1, 15.99), " +
-                "(12, 6, 'consola', 1, 499.99), " +
-                "(13, 3, 'videojuego', 3, 29.99), " +
-                "(14, 1, 'videojuego', 1, 59.99), " +
-                "(15, 13, 'merchandising', 4, 24.99), " +
-                "(16, 2, 'videojuego', 2, 69.99), " +
-                "(17, 5, 'videojuego', 1, 49.99), " +
-                "(18, 7, 'consola', 2, 299.99), " +
-                "(19, 9, 'consola', 1, 299.99), " +
-                "(20, 10, 'merchandising', 3, 15.99);";
+        String sql = "INSERT INTO FACTURA_LINEA (ID_FACTURA, ID_FACTURA_LINEA, ID_PRODUCTO, TIPO_PRODUCTO, CANTIDAD, PRECIO_UNITARIO) VALUES " +
+                "(1, 1, 1, 'videojuego', 1, 59.99), " +
+                "(1, 2, 10, 'merchandising', 2, 19.99), " +
+                "(1, 3, 2, 'videojuego', 1, 69.99), " +
+                "(2, 1, 6, 'consola', 1, 499.99), " +
+                "(2, 2, 10, 'merchandising', 3, 19.99), " +
+                "(3, 1, 5, 'videojuego', 2, 49.99), " +
+                "(3, 2, 3, 'videojuego', 1, 29.99), " +
+                "(4, 1, 8, 'consola', 1, 299.99), " +
+                "(4, 2, 12, 'merchandising', 4, 12.99), " +
+                "(5, 1, 2, 'videojuego', 1, 69.99), " +
+                "(5, 2, 11, 'merchandising', 1, 9.99), " +
+                "(6, 1, 5, 'videojuego', 1, 49.99), " +
+                "(6, 2, 1, 'videojuego', 1, 59.99), " +
+                "(7, 1, 3, 'videojuego', 1, 29.99), " +
+                "(7, 2, 6, 'consola', 1, 499.99), " +
+                "(8, 1, 13, 'merchandising', 5, 24.99), " +
+                "(9, 1, 7, 'consola', 2, 299.99), " +
+                "(10, 1, 4, 'videojuego', 1, 59.99), " +
+                "(10, 2, 5, 'videojuego', 2, 49.99), " +
+                "(11, 1, 9, 'consola', 1, 299.99), " +
+                "(11, 2, 10, 'merchandising', 1, 15.99), " +
+                "(12, 1, 6, 'consola', 1, 499.99), " +
+                "(13, 1, 3, 'videojuego', 3, 29.99), " +
+                "(14, 1, 1, 'videojuego', 1, 59.99), " +
+                "(15, 1, 13, 'merchandising', 4, 24.99), " +
+                "(16, 1, 2, 'videojuego', 2, 69.99), " +
+                "(17, 1, 5, 'videojuego', 1, 49.99), " +
+                "(18, 1, 7, 'consola', 2, 299.99), " +
+                "(19, 1, 9, 'consola', 1, 299.99), " +
+                "(20, 1, 10, 'merchandising', 3, 15.99);";
 
         try {
             if (comprobarTablaIsVacia(conexionBD, "FACTURA_LINEA") == 0) {
@@ -260,6 +334,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla MERCHANDISING.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarMerchandising(ConexionBD conexionBD) {
         String sql = "INSERT INTO MERCHANDISING (ID_PRODUCTO, TIPO_PRODUCTO, CATEGORIA, MATERIAL, DIMENSIONES, PESO, ID_PROVEEDOR) VALUES " +
                 "(10, 'merchandising', 'Ropa', 'Algodón', 'L', 0.2, 1), " +
@@ -277,6 +356,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla VIDEOJUEGO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarVideojuegos(ConexionBD conexionBD) {
         String sql = "INSERT INTO VIDEOJUEGO (ID_PRODUCTO, TIPO_PRODUCTO, FECHA_LANZAMIENTO, CLASIFICACION_EDAD, ID_PROVEEDOR) VALUES " +
                 "(1, 'videojuego', '2022-09-30', '3+', 2), " +
@@ -294,6 +378,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla CONSOLA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarConsolas(ConexionBD conexionBD) {
         String sql = "INSERT INTO CONSOLA (ID_PRODUCTO, TIPO_PRODUCTO, MARCA, MODELO, CAPACIDAD_ALMACENAMIENTO, COLOR, NUM_MANDOS_INCLUIDOS, ID_PROVEEDOR) VALUES " +
                 "(6, 'consola', 'Sony', 'PlayStation 5', '825GB', 'Blanco', 1, 1), " +
@@ -310,6 +399,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla PLATAFORMA
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarPlataformas(ConexionBD conexionBD) {
         String sql = "INSERT INTO PLATAFORMA (NOMBRE) VALUES " +
                 "('PC'), " +
@@ -336,6 +430,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla GENERO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarGeneros(ConexionBD conexionBD) {
         String sql = "INSERT INTO GENERO (NOMBRE) VALUES " +
                 "('Acción'), " +
@@ -368,6 +467,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla VIDEOJUEGO_PLATAFORMA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarVideojuegoPlataformas(ConexionBD conexionBD) {
         String sql = "INSERT INTO VIDEOJUEGO_PLATAFORMA (ID_PRODUCTO, TIPO_PRODUCTO, ID_PLATAFORMA) VALUES " +
                 "(1, 'videojuego', 3), " +
@@ -392,6 +496,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Inserta datos en la tabla VIDEOJUEGO_GENERO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void insertarVideojuegoGeneros(ConexionBD conexionBD) {
         String sql = "INSERT INTO VIDEOJUEGO_GENERO (ID_PRODUCTO, TIPO_PRODUCTO, ID_GENERO) VALUES " +
                 "(1, 'videojuego', 3), " +
@@ -414,6 +523,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla CONSOLA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaCliente(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS CLIENTE (" +
                 "ID_CLIENTE SERIAL PRIMARY KEY, " +
@@ -433,6 +547,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla MIEMBRO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaMiembros(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS MIEMBRO (" +
                 "ID_MIEMBRO SERIAL PRIMARY KEY, " +
@@ -451,6 +570,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla EMPLEADO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaEmpleados(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS EMPLEADO (" +
                 "ID_EMPLEADO SERIAL PRIMARY KEY, " +
@@ -471,6 +595,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla FACTURA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaFactura(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS FACTURA (" +
                 "ID_FACTURA SERIAL PRIMARY KEY, " +
@@ -491,6 +620,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla PRODUCTO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaProducto(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS PRODUCTO (" +
                 "ID_PRODUCTO SERIAL, " +
@@ -509,10 +643,15 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla FACTURA_LINEA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaFacturaLinea(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS FACTURA_LINEA (" +
                 "ID_FACTURA INTEGER NOT NULL, " +
-                "ID_FACTURA_LINEA SERIAL, " +
+                "ID_FACTURA_LINEA INTEGER NOT NULL, " +
                 "ID_PRODUCTO INTEGER NOT NULL, " +
                 "TIPO_PRODUCTO VARCHAR(50) NOT NULL, " +
                 "CANTIDAD INTEGER NOT NULL, " +
@@ -530,6 +669,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla PROVEEDOR.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaProveedor(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS PROVEEDOR (" +
                 "ID_PROVEEDOR SERIAL PRIMARY KEY, " +
@@ -548,6 +692,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla MERCHANDISING.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaMerchandising(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS MERCHANDISING (" +
                 "ID_PRODUCTO INTEGER, " +
@@ -570,6 +719,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla VIDEOJUEGOS.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaVideojuegos(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS VIDEOJUEGO (" +
                 "ID_PRODUCTO INTEGER NOT NULL, " +
@@ -590,6 +744,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla CONSOLA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaConsolas(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS CONSOLA (" +
                 "ID_PRODUCTO INTEGER, " +
@@ -613,6 +772,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla PLATAFORMA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaPlataforma(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS PLATAFORMA (" +
                 "ID_PLATAFORMA SERIAL PRIMARY KEY, " +
@@ -627,6 +791,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla GENERO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaGenero(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS GENERO (" +
                 "ID_GENERO SERIAL PRIMARY KEY, " +
@@ -641,6 +810,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla VIDEOJUEGO_PLATAFORMA.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaVideojuegoPlataforma(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS VIDEOJUEGO_PLATAFORMA (" +
                 "ID_PRODUCTO INTEGER NOT NULL, " +
@@ -659,6 +833,11 @@ public class CreacionBD {
         }
     }
 
+    /**
+     * Crea la tabla VIDEOJUEGO_GENERO.
+     *
+     * @param conexionBD Objeto de conexión a la base de datos.
+     */
     private void crearTablaVideojuegoGenero(ConexionBD conexionBD) {
         String sql = "CREATE TABLE IF NOT EXISTS VIDEOJUEGO_GENERO (" +
                 "ID_PRODUCTO INTEGER NOT NULL, " +

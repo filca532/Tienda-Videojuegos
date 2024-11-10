@@ -1,4 +1,4 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
 import java.util.Objects;
 
@@ -12,6 +12,10 @@ public class Genero {
 
     public Genero(int idGenero, String nombre) {
         this.idGenero = idGenero;
+        this.nombre = nombre;
+    }
+
+    public Genero(String nombre) {
         this.nombre = nombre;
     }
 

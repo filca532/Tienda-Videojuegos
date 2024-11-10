@@ -1,10 +1,12 @@
-package es.cheste.clases;
+package es.cheste.objetos;
+
+import java.sql.Date;
 
 public class Factura {
     private int idFactura;
     private int idCliente;
     private int idEmpleado;
-    private String fechaPedido;
+    private Date fechaPedido;
     private double totalPedido;
     private String metodoPago;
 
@@ -12,7 +14,7 @@ public class Factura {
         super();
     }
 
-    public Factura(int idFactura, int idCliente, int idEmpleado, String fechaPedido, double totalPedido, String metodoPago) {
+    public Factura(int idFactura, int idCliente, int idEmpleado, Date fechaPedido, double totalPedido, String metodoPago) {
         this.idFactura = idFactura;
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;
@@ -21,7 +23,7 @@ public class Factura {
         this.metodoPago = metodoPago;
     }
 
-    public Factura(int idCliente, int idEmpleado, String fechaPedido, double totalPedido, String metodoPago) {
+    public Factura(int idCliente, int idEmpleado, Date fechaPedido, double totalPedido, String metodoPago) {
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;
         this.fechaPedido = fechaPedido;
@@ -53,11 +55,11 @@ public class Factura {
         this.idEmpleado = idEmpleado;
     }
 
-    public String getFechaPedido() {
+    public Date getFechaPedido() {
         return fechaPedido;
     }
 
-    public void setFechaPedido(String fechaPedido) {
+    public void setFechaPedido(Date fechaPedido) {
         this.fechaPedido = fechaPedido;
     }
 

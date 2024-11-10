@@ -1,5 +1,6 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Empleado {
@@ -10,14 +11,14 @@ public class Empleado {
     private String telefono;
     private String puesto;
     private double salario;
-    private String fechaContratacion;
+    private Date fechaContratacion;
     private double descuentoEmpleado;
 
     public Empleado() {
         super();
     }
 
-    public Empleado(int idEmpleado, String nombre, String apellidos, String email, String telefono, String puesto, double salario, String fechaContratacion, double descuentoEmpleado) {
+    public Empleado(int idEmpleado, String nombre, String apellidos, String email, String telefono, String puesto, double salario, Date fechaContratacion, double descuentoEmpleado) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -29,7 +30,7 @@ public class Empleado {
         this.descuentoEmpleado = descuentoEmpleado;
     }
 
-    public Empleado(String nombre, String apellidos, String email, String telefono, String puesto, double salario, String fechaContratacion, double descuentoEmpleado) {
+    public Empleado(String nombre, String apellidos, String email, String telefono, String puesto, double salario, Date fechaContratacion, double descuentoEmpleado) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -96,11 +97,12 @@ public class Empleado {
         this.salario = salario;
     }
 
-    public String getFechaContratacion() {
+
+    public Date getFechaContratacion() {
         return fechaContratacion;
     }
 
-    public void setFechaContratacion(String fechaContratacion) {
+    public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
 

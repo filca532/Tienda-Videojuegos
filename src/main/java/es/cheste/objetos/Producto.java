@@ -1,4 +1,4 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
 import java.util.Objects;
 
@@ -21,11 +21,11 @@ public class Producto {
         this.stock = stock;
     }
 
-    public Producto(String nombre, double precio, int stock, String tipoProducto) {
+    public Producto(String tipoProducto, String nombre, double precio, int stock) {
         this.nombre = nombre;
+        this.tipoProducto = tipoProducto;
         this.precio = precio;
         this.stock = stock;
-        this.tipoProducto = tipoProducto;
     }
 
     public int getIdProducto() {

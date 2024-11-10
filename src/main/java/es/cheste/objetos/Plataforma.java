@@ -1,4 +1,4 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
 import java.util.Objects;
 
@@ -12,6 +12,10 @@ public class Plataforma {
 
     public Plataforma(int idPlataforma, String nombre) {
         this.idPlataforma = idPlataforma;
+        this.nombre = nombre;
+    }
+
+    public Plataforma(String nombre) {
         this.nombre = nombre;
     }
 

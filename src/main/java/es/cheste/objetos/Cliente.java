@@ -1,5 +1,6 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Cliente {
@@ -9,13 +10,13 @@ public class Cliente {
     private String email;
     private String telefono;
     private String direccion;
-    private String fechaRegistro;
+    private Date fechaRegistro;
 
     public Cliente() {
         super();
     }
 
-    public Cliente(int idCliente, String nombre, String apellidos, String email, String telefono, String direccion, String fechaRegistro) {
+    public Cliente(int idCliente, String nombre, String apellidos, String email, String telefono, String direccion, Date fechaRegistro) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -25,7 +26,7 @@ public class Cliente {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Cliente(String nombre, String apellidos, String email, String telefono, String direccion, String fechaRegistro) {
+    public Cliente(String nombre, String apellidos, String email, String telefono, String direccion, Date fechaRegistro) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -82,11 +83,11 @@ public class Cliente {
         this.direccion = direccion;
     }
 
-    public String getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(String fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 

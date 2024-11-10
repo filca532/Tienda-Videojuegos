@@ -1,12 +1,13 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
 import java.util.Objects;
 
 public class Consola {
     private int idProducto;
+    private String tipoProducto;
     private String marca;
     private String modelo;
-    private int almacenamiento;
+    private String almacenamiento;
     private String color;
     private int mandosIncluidos;
     private int proveedor;
@@ -15,8 +16,20 @@ public class Consola {
         super();
     }
 
-    public Consola(int idProducto, String marca, String modelo, int almacenamiento, String color, int mandosIncluidos, int proveedor) {
+    public Consola(int idProducto, String marca, String modelo, String almacenamiento, String color, int mandosIncluidos, int proveedor) {
         this.idProducto = idProducto;
+        this.tipoProducto = tipoProducto;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.almacenamiento = almacenamiento;
+        this.color = color;
+        this.mandosIncluidos = mandosIncluidos;
+        this.proveedor = proveedor;
+    }
+
+    public Consola(int idProducto, String tipoProducto, String marca, String modelo, String almacenamiento, String color, int mandosIncluidos, int proveedor) {
+        this.idProducto = idProducto;
+        this.tipoProducto = tipoProducto;
         this.marca = marca;
         this.modelo = modelo;
         this.almacenamiento = almacenamiento;
@@ -31,6 +44,14 @@ public class Consola {
 
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public String getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(String tipoProducto) {
+        this.tipoProducto = tipoProducto;
     }
 
     public String getMarca() {
@@ -49,11 +70,11 @@ public class Consola {
         this.modelo = modelo;
     }
 
-    public int getAlmacenamiento() {
+    public String getAlmacenamiento() {
         return almacenamiento;
     }
 
-    public void setAlmacenamiento(int almacenamiento) {
+    public void setAlmacenamiento(String almacenamiento) {
         this.almacenamiento = almacenamiento;
     }
 
@@ -86,18 +107,19 @@ public class Consola {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Consola consola = (Consola) o;
-        return idProducto == consola.idProducto && almacenamiento == consola.almacenamiento && mandosIncluidos == consola.mandosIncluidos && proveedor == consola.proveedor && Objects.equals(marca, consola.marca) && Objects.equals(modelo, consola.modelo) && Objects.equals(color, consola.color);
+        return idProducto == consola.idProducto && almacenamiento == consola.almacenamiento && mandosIncluidos == consola.mandosIncluidos && proveedor == consola.proveedor && Objects.equals(tipoProducto, consola.tipoProducto) && Objects.equals(marca, consola.marca) && Objects.equals(modelo, consola.modelo) && Objects.equals(color, consola.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, marca, modelo, almacenamiento, color, mandosIncluidos, proveedor);
+        return Objects.hash(idProducto, tipoProducto, marca, modelo, almacenamiento, color, mandosIncluidos, proveedor);
     }
 
     @Override
     public String toString() {
         return "Consola{" +
                 "idProducto=" + idProducto +
+                ", tipoProducto='" + tipoProducto + '\'' +
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", almacenamiento=" + almacenamiento +

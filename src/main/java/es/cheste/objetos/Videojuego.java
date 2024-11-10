@@ -1,22 +1,23 @@
-package es.cheste.clases;
+package es.cheste.objetos;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class Videojuego {
     private int idProducto;
-    private String fechaLanzamiento;
+    private Date fechaLanzamiento;
     private String clasificacionEdad;
-    private int idProveedor;
+    private int proveedor;
 
     public Videojuego() {
         super();
     }
 
-    public Videojuego(int idProducto, String fechaLanzamiento, String clasificacionEdad, int idProveedor) {
+    public Videojuego(int idProducto, Date fechaLanzamiento, String clasificacionEdad, int proveedor) {
         this.idProducto = idProducto;
         this.fechaLanzamiento = fechaLanzamiento;
         this.clasificacionEdad = clasificacionEdad;
-        this.idProveedor = idProveedor;
+        this.proveedor = proveedor;
     }
 
     public int getIdProducto() {
@@ -27,11 +28,11 @@ public class Videojuego {
         this.idProducto = idProducto;
     }
 
-    public String getFechaLanzamiento() {
+    public Date getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
-    public void setFechaLanzamiento(String fechaLanzamiento) {
+    public void setFechaLanzamiento(Date fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
@@ -43,12 +44,12 @@ public class Videojuego {
         this.clasificacionEdad = clasificacionEdad;
     }
 
-    public int getIdProveedor() {
-        return idProveedor;
+    public int getProveedor() {
+        return proveedor;
     }
 
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdProveedor(int proveedor) {
+        this.proveedor = proveedor;
     }
 
     @Override
@@ -56,12 +57,12 @@ public class Videojuego {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Videojuego that = (Videojuego) o;
-        return idProducto == that.idProducto && idProveedor == that.idProveedor && Objects.equals(fechaLanzamiento, that.fechaLanzamiento) && Objects.equals(clasificacionEdad, that.clasificacionEdad);
+        return idProducto == that.idProducto && proveedor == that.proveedor && Objects.equals(fechaLanzamiento, that.fechaLanzamiento) && Objects.equals(clasificacionEdad, that.clasificacionEdad);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, fechaLanzamiento, clasificacionEdad, idProveedor);
+        return Objects.hash(idProducto, fechaLanzamiento, clasificacionEdad, proveedor);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class Videojuego {
                 "idProducto=" + idProducto +
                 ", fechaLanzamiento='" + fechaLanzamiento + '\'' +
                 ", clasificacionEdad='" + clasificacionEdad + '\'' +
-                ", idProveedor=" + idProveedor +
+                ", proveedor=" + proveedor +
                 '}';
     }
 }
